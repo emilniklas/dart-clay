@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 String _indent(String input, int tabs) {
   return input.split('\n').map((String line) {

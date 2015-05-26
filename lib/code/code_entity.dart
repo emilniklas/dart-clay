@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 abstract class CodeEntity {
   String toString();

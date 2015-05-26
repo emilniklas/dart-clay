@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 class File implements io.File {
   String filename;

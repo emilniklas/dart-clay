@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 class Library extends File implements CodeEntity {
   final List<String> _imports = [];

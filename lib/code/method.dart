@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 class Method extends Variable implements CodeEntity {
   String name;

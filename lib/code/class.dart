@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 class Class implements CodeEntity {
   final String name;

@@ -1,4 +1,4 @@
-part of clay;
+part of clay.code;
 
 class Variable implements CodeEntity {
   final String name;
@@ -20,7 +20,7 @@ class Variable implements CodeEntity {
   }
 
   String _valueToString() {
-    if (value == null) return;
+    if (value == null) return 'null';
     if (value is String) return "'$value'";
     if (value is Variable) return (value as Variable).name;
     return value.toString();
