@@ -1,0 +1,7 @@
+name: clay
+author: Emil Persson <emil.n.persson@gmail.com>
+homepage: http://github.com/emilniklas/dart-clay
+version: 0.1.0
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+description: A code generator API
