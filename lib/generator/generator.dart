@@ -2,11 +2,23 @@ part of clay.generator;
 
 abstract class Generator {
   Future run();
+  Map<Symbol, VariableMirror> _questionFields;
 
-  Future ask() async {
-    for (var dM in _allQuestionFields()) {
+  Generator() {
+    var aQ = _allQuestionFields();
+    _questionFields = new Map.fromIterables(aQ.map((v)=>v.simpleName), aQ);
+  }
+
+  Future ask([Symbol field]) async {
+    if (field != null) return _askSingle(field);
+
+    for (var dM in new List.from(_questionFields.values)) {
       await _askQuestion(dM);
     }
+  }
+
+  Future _askSingle(Symbol field) {
+    return _askQuestion(_questionFields[field]);
   }
 
   List<VariableMirror> _allQuestionFields() {
@@ -27,6 +39,7 @@ abstract class Generator {
     var defaultValue = reflect(this).getField(field.simpleName).reflectee;
 
     reflect(this).setField(field.simpleName, await new Query(question, type, defaultValue).answer());
+    _questionFields.remove(field.simpleName);
   }
 
   Ask _getQuestion(DeclarationMirror dM) {

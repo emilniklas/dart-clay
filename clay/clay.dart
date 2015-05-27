@@ -1,10 +1,5 @@
 library clay;
 
-
-
-
-
-
-class MyNewClass {
+class Clay {
   int testMethod();
 }

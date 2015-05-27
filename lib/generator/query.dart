@@ -15,6 +15,7 @@ class Query {
     if (type == bool) return _askBool();
     if (reflectClass(type).isEnum) return _askEnum();
     String input = await _ask();
+    input = input.trimRight();
     if (_isEmpty(input) && defaultValue != null) return defaultValue;
     try {
       _verify(input);

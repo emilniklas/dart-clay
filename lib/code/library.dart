@@ -24,16 +24,18 @@ class Library extends File implements CodeEntity {
   }
 
   String toString() {
-    return '''
-library $name;
+    var pieces = [
+      'library $name;',
+      _importsExports(),
+      _partsToString(),
+      super.toString(),
+    ]
+      ..removeWhere(_isEmpty);
+    return pieces.join('\n\n');
+  }
 
-${_importsToString()}
-${_exportsToString()}
-
-${_partsToString()}
-
-${super.toString()}
-    '''.trim();
+  String _importsExports() {
+    return _importsToString() + '\n' + _exportsToString().trim();
   }
 
   String _importsToString() {
@@ -71,6 +73,10 @@ ${super.toString()}
   Future _writeFile(File file) async {
     await file.create(recursive: true);
     await file.writeAsString(file.toString());
+  }
+
+  bool _isEmpty(String input) {
+    return input.trim() == '';
   }
 
   noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
