@@ -1,6 +1,11 @@
 part of clay.generator;
 
-final Stream<List<int>> _stdin = stdin.asBroadcastStream();
+StreamSubscription _subscription;
+final Stream<List<int>> _stdin = stdin.asBroadcastStream(onCancel: (s) => _subscription = s);
+
+Future finishGenerators() {
+  return _subscription.cancel();
+}
 
 class Query {
   final Type type;
@@ -163,6 +168,7 @@ class Query {
   }
 
   void _writeType() {
+    if (type == String) return '';
     Console.setTextColor(Color.CYAN.id);
     stdout.write(' $type');
     Console.resetAll();

@@ -1,46 +1,46 @@
 import 'package:clay/clay.dart';
-export 'package:clay/run.dart';
+//export 'package:clay/run.dart';
 import 'dart:async';
-import 'package:path/path.dart';
+//import 'package:path/path.dart';
 import 'dart:io';
+import 'dart:isolate';
 
 class BridgeGenerator extends Generator {
 
-  @Ask('What should the application be called?')
-  String name = basename(Directory.current.path);
+  @Ask('How old are you?')
+  int age = 13;
 
-  @Ask('What should the class be called?')
-  String className;
+  @Ask('What should the application be called?')
+  String name;
+
 
   Future run() async {
 
-    await ask(#name);
-    className = name.replaceAllMapped(new RegExp(r'[._](\w)'), (m) => m[1].toUpperCase());
-    className = className[0].toUpperCase() + className.substring(1);
+    await ask(#age);
+
+    name = 'app_$age';
+
     await ask();
 
-
-
-    var lib = new Library(name);
-
-    lib.addClass(new Class(className)
-    ..method(new Method('testMethod')
-    ..type = int));
-
-    var dir = new Directory(name)..createSync(recursive: true);
-
-    await new Yaml('test', [
-      {
-        'key': 'value',
-        'nested': {
-          'object': [
-            'list'
-          ]
-        }
-      },
-      'hej'
-    ]).writeTo(dir);
-
-    await lib.writeTo(dir);
+    await finishGenerators();
+    print('Generator done');
+//    await new Library(name).writeTo(new Directory('out'));
   }
 }
+
+main() async {
+
+  Isolate isol = await Isolate.spawn(_run, null);
+  var exitPort = new ReceivePort();
+  isol.addOnExitListener(exitPort.sendPort);
+  await exitPort.first;
+  exitPort.close();
+  print('back to reality');
+
+//  stdin.listen((data) {
+//    print('hee');
+//    print(data);
+//  });
+}
+
+_run(_) => new BridgeGenerator().run();
